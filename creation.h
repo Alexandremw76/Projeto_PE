@@ -1,5 +1,5 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef CREATION_H
+#define CREATION_H
 
 typedef struct {
   int *data;
