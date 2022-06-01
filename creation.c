@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "matrix.h"
+#include "creation.h"
 
 int matriz[9]={7, 2, 3, 4, 5, 6, 7, 8, 9};
 
