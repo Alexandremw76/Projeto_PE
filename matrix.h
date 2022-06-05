@@ -19,6 +19,8 @@ Matrix tile_matrix(Matrix matrix, int reps);
 
 /* funções para acessar elementos */
 int get_element(Matrix matrix, int ri, int ci);
+void put_element(Matrix matrix, int ri, int ci,int elem);
+void print_matrix(Matrix matrix);
 
 /* funções para manipulação de dimensões */
 
