@@ -89,17 +89,62 @@ Matrix tile_matrix(Matrix matrix, int reps){
     return m;
 }
 
+
 int get_element(Matrix matrix, int ri, int ci){
     if (ri >= matrix.n_rows || ci >= matrix.n_cols){
         printf("** Erro: índice out of range **\n\n");
         exit(1);
     }
-    int index;
+    int index=0;
+    for(int i=0; i<ri; i++)
+        index += matrix.stride_rows;
+    
+    for(int i=0; i<ci; i++)
+        index++;
+    
+
+    return matrix.data[index];
+}
+void put_element(Matrix matrix, int ri, int ci,int elem){
+    if (ri >= matrix.n_rows || ci >= matrix.n_cols){
+        printf("** Erro: índice out of range **\n\n");
+        exit(1);
+    }
+    int index=0;
     for(int i=0; i<ri; i++)
         index += matrix.stride_rows;
     for(int i=0; i<ci; i++)
         index++;
 
-    return matrix.data[index];
+    matrix.data[index]=elem;
+}
+void print_matrix(Matrix matrix){
+    int elemento=0;
+    int col=0;
+    int elemento_pnultimo=matrix.n_cols*matrix.n_rows-2;
+    printf("%d Linhas x %d Colunas",matrix.n_rows,matrix.n_cols);
+    printf("\n[[");
+    while(elemento<matrix.n_cols*matrix.n_rows){
+        if(col<matrix.n_cols){
+             if(col>=matrix.n_cols-1){
+                printf("%d",matrix.data[elemento]);
+            }
+            if(col<matrix.n_cols-1){
+                printf("%d,",matrix.data[elemento]);
+            }
+            col++;
+        }
+        if(col>=matrix.n_cols){
+            printf("]");
+            if (elemento<elemento_pnultimo){
+                printf("\n [");
+            }
+            else{
+                printf("]");
+            }
+            col=0;
+        }
+        elemento++;
+    }
 }
 
