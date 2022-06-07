@@ -8,7 +8,7 @@ Projeto de programação estruturada
                 Funções de agregação           
 argmin "https://numpy.org/doc/stable/reference/generated/numpy.argmin.html"
 
-armax "https://numpy.org/doc/stable/reference/generated/numpy.argmax.html"
+argmax "https://numpy.org/doc/stable/reference/generated/numpy.argmax.html"
 
             Funções de operações aritméticas
 add "https://www.geeksforgeeks.org/numpy-add-in-python/"
