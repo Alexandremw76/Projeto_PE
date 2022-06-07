@@ -119,31 +119,164 @@ void put_element(Matrix matrix, int ri, int ci,int elem){
     matrix.data[index]=elem;
 }
 void print_matrix(Matrix matrix){
-    int elemento=0;
-    int col=0;
-    int elemento_pnultimo=matrix.n_cols*matrix.n_rows-2;
-    printf("%d Linhas x %d Colunas",matrix.n_rows,matrix.n_cols);
-    printf("\n[[");
-    while(elemento<matrix.n_cols*matrix.n_rows){
-        if(col<matrix.n_cols){
-             if(col>=matrix.n_cols-1){
-                printf("%d",matrix.data[elemento]);
-            }
-            if(col<matrix.n_cols-1){
-                printf("%d,",matrix.data[elemento]);
-            }
-            col++;
+    int index = 0;
+
+    printf("%d Linha(s) x %d Coluna(s)\n", matrix.n_rows, matrix.n_cols);
+
+    printf("[");
+    for(int i=0;i<matrix.n_rows; i++){
+
+        if(i>0)
+            printf(" ");
+        printf("[");
+
+        /* caso matriz transposta */
+        if(matrix.stride_rows==1)
+            index = i;
+
+        for(int j=0; j<matrix.n_cols; j++){
+            printf("%d", matrix.data[index]);
+
+            if(j != matrix.n_cols-1)
+                printf(" ");
+
+            index += matrix.stride_cols;
         }
-        if(col>=matrix.n_cols){
+        if(i < matrix.n_rows-1)
+            printf("]\n");
+        else
             printf("]");
-            if (elemento<elemento_pnultimo){
-                printf("\n [");
-            }
-            else{
-                printf("]");
-            }
-            col=0;
-        }
-        elemento++;
     }
+    printf("]\n");
+} 
+int min(Matrix matrix){
+    int min_n=matrix.data[0];
+    for(int i=0; i<matrix.n_cols*matrix.n_rows; i++){
+        if(min_n>matrix.data[i]){
+            min_n=matrix.data[i];
+        }
+    }
+    return min_n;
+}
+int max(Matrix matrix){
+    int max_n=matrix.data[0];
+    for(int i=0; i<matrix.n_cols*matrix.n_rows; i++){
+        if(max_n<matrix.data[i]){
+            max_n=matrix.data[i];
+        }
+    }
+    return max_n;
+}
+int argmax(Matrix matrix){
+    int max_n=max(matrix);
+    for(int i=0; i<matrix.n_cols*matrix.n_rows; i++){
+        if(matrix.data[i]==max_n){
+            return i;
+        }
+    }
+}
+int argmin(Matrix matrix){
+    int min_n=min(matrix);
+    for(int i=0; i<matrix.n_cols*matrix.n_rows; i++){
+        if(matrix.data[i]==min_n){
+            return i;
+
+        }
+    }
+}
+Matrix add(Matrix matrix_1, Matrix matrix_2){
+
+     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
+        printf("** Erro: As matrizes possuem dimensões diferentes**\n\n");
+        exit(1);
+    }
+    Matrix matrix;
+    int *vector;
+    int nelementos = matrix_1.n_rows * matrix_2.n_cols;
+
+    vector = (int *) malloc(nelementos*sizeof(int));
+
+    if(!vector){
+        printf("** Erro: Memoria Insuficiente **");
+        exit(1);
+    }
+    for(int i=0; i<nelementos; i++)
+        vector[i] = matrix_1.data[i]+matrix_2.data[i];
+
+    matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
+    free(vector);
+    return matrix;
+
+}
+Matrix sub(Matrix matrix_1, Matrix matrix_2){
+
+     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
+        printf("** Erro: As matrizes possuem dimensões diferentes**\n\n");
+        exit(1);
+    }
+    Matrix matrix;
+    int *vector;
+    int nelementos = matrix_1.n_rows * matrix_2.n_cols;
+
+    vector = (int *) malloc(nelementos*sizeof(int));
+
+    if(!vector){
+        printf("** Erro: Memoria Insuficiente **");
+        exit(1);
+    }
+    for(int i=0; i<nelementos; i++)
+        vector[i] = matrix_1.data[i]-matrix_2.data[i];
+
+    matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
+    free(vector);
+    return matrix;
+
+}
+Matrix division(Matrix matrix_1, Matrix matrix_2){
+
+     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
+        printf("** Erro: As matrizes possuem dimensões diferentes**\n\n");
+        exit(1);
+    }
+    Matrix matrix;
+    int *vector;
+    int nelementos = matrix_1.n_rows * matrix_2.n_cols;
+
+    vector = (int *) malloc(nelementos*sizeof(int));
+
+    if(!vector){
+        printf("** Erro: Memoria Insuficiente **");
+        exit(1);
+    }
+    for(int i=0; i<nelementos; i++)
+        vector[i] = matrix_1.data[i]/matrix_2.data[i];
+
+    matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
+    free(vector);
+    return matrix;
+
+}
+Matrix mul(Matrix matrix_1, Matrix matrix_2){
+
+     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
+        printf("** Erro: As matrizes possuem dimensões diferentes**\n\n");
+        exit(1);
+    }
+    Matrix matrix;
+    int *vector;
+    int nelementos = matrix_1.n_rows * matrix_2.n_cols;
+
+    vector = (int *) malloc(nelementos*sizeof(int));
+
+    if(!vector){
+        printf("** Erro: Memoria Insuficiente **");
+        exit(1);
+    }
+    for(int i=0; i<nelementos; i++)
+        vector[i] = matrix_1.data[i]*matrix_2.data[i];
+
+    matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
+    free(vector);
+    return matrix;
+
 }
