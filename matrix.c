@@ -167,18 +167,18 @@ int max(Matrix matrix){
     }
     return max_n;
 }
-int argmax(Matrix matrix){
-    int max_n=max(matrix);
-    for(int i=0; i<matrix.n_cols*matrix.n_rows; i++){
-        if(matrix.data[i]==max_n){
-            return i;
-        }
-    }
-}
 int argmin(Matrix matrix){
     int min_n=min(matrix);
     for(int i=0; i<matrix.n_cols*matrix.n_rows; i++){
         if(matrix.data[i]==min_n){
+            return i;
+        }
+    }
+}
+int argmax(Matrix matrix){
+    int max_n=max(matrix);
+    for(int i=0; i<matrix.n_cols*matrix.n_rows; i++){
+        if(matrix.data[i]==max_n){
             return i;
 
         }
