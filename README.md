@@ -1,16 +1,15 @@
-# Projeto_PE
-Projeto de programação estruturada
+                       # Projeto_PE
 
-                  Fonte das funçoes criadas
+                  #Fonte das funçoes criadas
                   
                   
                   
-                Funções de agregação           
+                 #Funções de agregação           
 argmin "https://numpy.org/doc/stable/reference/generated/numpy.argmin.html"
 
 argmax "https://numpy.org/doc/stable/reference/generated/numpy.argmax.html"
 
-            Funções de operações aritméticas
+            #Funções de operações aritméticas
 add "https://www.geeksforgeeks.org/numpy-add-in-python/"
 
 sub "https://www.geeksforgeeks.org/numpy-subtract-in-python/"
