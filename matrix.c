@@ -105,6 +105,7 @@ int get_element(Matrix matrix, int ri, int ci){
 
     return matrix.data[index];
 }
+
 void put_element(Matrix matrix, int ri, int ci,int elem){
     if (ri >= matrix.n_rows || ci >= matrix.n_cols){
         printf("** Erro: índice out of range **\n\n");
@@ -118,6 +119,7 @@ void put_element(Matrix matrix, int ri, int ci,int elem){
 
     matrix.data[index]=elem;
 }
+/*
 void print_matrix(Matrix matrix){
     int elemento=0;
     int col=0;
@@ -146,4 +148,66 @@ void print_matrix(Matrix matrix){
         }
         elemento++;
     }
+    printf("\n");
 }
+*/
+Matrix transpose(Matrix matrix) {
+
+    matrix.n_rows = matrix.n_cols;
+    matrix.n_cols = matrix.n_rows;
+    matrix.stride_rows = matrix.stride_cols;
+    matrix.stride_cols = matrix.stride_rows;
+    
+    return matrix;
+}
+
+void print_matrix(Matrix matrix){
+    int index = 0;
+
+    printf("%d Linha(s) x %d Coluna(s)\n", matrix.n_rows, matrix.n_cols);
+
+    printf("[");
+    for(int i=0;i<matrix.n_rows; i++){
+
+        if(i>0)
+            printf(" ");
+        printf("[");
+
+        /* caso matriz transposta */
+        if(matrix.stride_rows==1)
+            index = i;
+
+        for(int j=0; j<matrix.n_cols; j++){
+            printf("%d", matrix.data[index]);
+
+            if(j != matrix.n_cols-1)
+                printf(" ");
+
+            index += matrix.stride_cols;
+        }
+        if(i < matrix.n_rows-1)
+            printf("]\n");
+        else
+            printf("]");
+    }
+    printf("]\n");
+}
+
+Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols){
+    int quantidade_de_elementos = matrix.n_rows * matrix.n_cols;
+
+    if(quantidade_de_elementos != new_n_rows * new_n_cols){
+        printf("** Erro: nova matriz nao pode ter esse formato**\n");
+        exit(1);
+    }
+
+    matrix.n_rows = new_n_rows;
+    matrix.n_cols = new_n_cols;
+    matrix.stride_rows = new_n_cols;
+
+    return matrix;
+}
+
+
+
+

@@ -23,6 +23,9 @@ void put_element(Matrix matrix, int ri, int ci,int elem);
 void print_matrix(Matrix matrix);
 
 /* funções para manipulação de dimensões */
+Matrix transpose(Matrix matrix);
+Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols);
+Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce);
 
 /* funções de agregação */
 
