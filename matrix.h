@@ -28,9 +28,15 @@ Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols);
 Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce);
 
 /* funções de agregação */
-
+int min(Matrix matrix);
+int max(Matrix matrix);
+int argmin(Matrix matrix);
+int argmax(Matrix matrix);
 /* funções de operações aritméticas */
-
+Matrix add(Matrix matrix_1, Matrix matrix_2); 
+Matrix sub(Matrix matrix_1, Matrix matrix_2); 
+Matrix division(Matrix matrix_1, Matrix matrix_2); 
+Matrix mul(Matrix matrix_1, Matrix matrix_2);  
 
 #endif
 
