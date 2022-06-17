@@ -32,6 +32,7 @@ int min(Matrix matrix);
 int max(Matrix matrix);
 int argmin(Matrix matrix);
 int argmax(Matrix matrix);
+
 /* funções de operações aritméticas */
 Matrix add(Matrix matrix_1, Matrix matrix_2); 
 Matrix sub(Matrix matrix_1, Matrix matrix_2); 
