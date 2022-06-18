@@ -202,41 +202,122 @@ Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce){
 
 
 int min(Matrix matrix){
-    int min_n=matrix.data[matrix.offset];
-    for(int i=matrix.offset; i<matrix.n_cols*matrix.n_rows; i++){
-        if(min_n>matrix.data[i]){
-            min_n=matrix.data[i];
+   int min_n=matrix.data[matrix.offset];
+   int index=matrix.offset;
+   for(int i=0;i<matrix.n_rows;i++)
+    {   
+
+        for(int j=0; j<matrix.n_cols; j++)
+        {
+            if (min_n > matrix.data[index]){
+                min_n = matrix.data[index];
+        }
+            index += matrix.stride_cols;
+        }
+
+        if(matrix.stride_rows==1)
+        { 
+            index = matrix.offset + matrix.stride_rows;
+        }
+        else
+        {
+            if(matrix.n_cols>1)
+            {
+                index = (i+1)*matrix.stride_rows + matrix.offset;
+            }
         }
     }
     return min_n;
 }
 int max(Matrix matrix){
-    int max_n=matrix.data[matrix.offset];
-    for(int i=matrix.offset; i<matrix.n_cols*matrix.n_rows; i++){
-        if(max_n<matrix.data[i]){
-            max_n=matrix.data[i];
+   int max_n=matrix.data[matrix.offset];
+   int index=matrix.offset;
+   for(int i=0;i<matrix.n_rows;i++)
+    {   
+        for(int j=0; j<matrix.n_cols; j++)
+        {
+            if (max_n < matrix.data[index])
+            {
+                max_n = matrix.data[index];
+            }
+            index += matrix.stride_cols;
+        }
+
+        if(matrix.stride_rows==1)
+        { 
+            index = matrix.offset + matrix.stride_rows;
+        }
+        else
+        {
+            if(matrix.n_cols>1)
+            {
+                index = (i+1)*matrix.stride_rows + matrix.offset;
+            }
         }
     }
     return max_n;
 }
 int argmin(Matrix matrix){
-    int min_n=min(matrix);
-    for(int i=matrix.offset; i<matrix.n_cols*matrix.n_rows; i++){
-        if(matrix.data[i]==min_n){
-            return i;
+   int min_n=matrix.data[matrix.offset];
+   int index=matrix.offset;
+   int cont = index;
+   for(int i=0;i<matrix.n_rows;i++)
+    {   
 
+        for(int j=0; j<matrix.n_cols; j++)
+        {
+            if (min_n > matrix.data[index])
+            {
+                min_n = matrix.data[index];
+                cont = index;
+            }
+            index += matrix.stride_cols;
+        }
+
+        if(matrix.stride_rows==1)
+        { 
+            index = matrix.offset + matrix.stride_rows;
+        }
+        else
+        {
+            if(matrix.n_cols>1)
+            {
+                index = (i+1)*matrix.stride_rows + matrix.offset;
+            }
         }
     }
-    printf("\n");
+    return cont;
 }
 int argmax(Matrix matrix){
-    int max_n=max(matrix);
-    for(int i=matrix.offset; i<matrix.n_cols*matrix.n_rows; i++){
-        if(matrix.data[i]==max_n){
-            return i;
+   int max_n=matrix.data[matrix.offset];
+   int index=matrix.offset;
+   int cont = index;
+   for(int i=0;i<matrix.n_rows;i++)
+    {   
 
+        for(int j=0; j < matrix.n_cols; j++)
+        {
+            if (max_n < matrix.data[index])
+            {
+                max_n = matrix.data[index];
+                cont = index;
+            }
+            index += matrix.stride_cols;
+        }
+
+        if(matrix.stride_rows==1)
+        { 
+            index = matrix.offset + matrix.stride_rows;
+        }
+        else
+        {
+            if(matrix.n_cols>1)
+            {
+                index = (i+1)*matrix.stride_rows + matrix.offset;
+            }
         }
     }
+    return cont;
 }
 Matrix add(Matrix matrix_1, Matrix matrix_2){
     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
