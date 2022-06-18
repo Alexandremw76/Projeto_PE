@@ -98,7 +98,7 @@ int get_element(Matrix matrix, int ri, int ci){
         index++;
     
 
-    return matrix.data[index];
+    return matrix.data[index+matrix.offset];
 }
 void put_element(Matrix matrix, int ri, int ci,int elem){
     if (ri >= matrix.n_rows || ci >= matrix.n_cols){
@@ -111,7 +111,7 @@ void put_element(Matrix matrix, int ri, int ci,int elem){
     for(int i=0; i<ci; i++)
         index++;
 
-    matrix.data[index]=elem;
+    matrix.data[index+matrix.offset]=elem;
 }
 void print_matrix(Matrix matrix){
     int index = matrix.offset;
