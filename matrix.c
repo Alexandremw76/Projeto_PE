@@ -238,54 +238,98 @@ int argmax(Matrix matrix){
         }
     }
 }
-
 Matrix add(Matrix matrix_1, Matrix matrix_2){
-
     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
         printf("** Erro: As matrizes possuem dimensões diferentes **\n\n");
         exit(1);
     }
     Matrix matrix;
+    int nelementos = matrix_1.n_rows * matrix_2.n_rows;
     int *vector;
-    int nelementos = matrix_1.n_rows * matrix_2.n_cols;
-
+    int index_matriz_1=matrix_1.offset;
+    int index_matriz_2=matrix_2.offset;
+    int cont = 0;
     vector = (int *) malloc(nelementos*sizeof(int));
 
     if(!vector){
         printf("** Erro: Memoria Insuficiente **");
         exit(1);
     }
-    for(int i=0; i<nelementos; i++)
-        vector[i] = matrix_1.data[i+matrix_1.offset]+matrix_2.data[i+matrix_2.offset];
+    for(int i=0;i<matrix_1.n_rows;i++)
+    {
+        for(int j=0; j<matrix_1.n_cols; j++)
+        {
+            vector[cont]=matrix_1.data[index_matriz_1]+matrix_2.data[index_matriz_2];
+            cont++;
+            index_matriz_1 += matrix_1.stride_cols;
+            index_matriz_2 += matrix_2.stride_cols;
 
-    matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
+        }
+
+        if(matrix_1.stride_rows==1)
+        { 
+            index_matriz_1 = matrix_1.offset + matrix_1.stride_rows;
+            index_matriz_2 = matrix_2.offset + matrix_2.stride_rows;
+        }
+        else
+        {
+            if(matrix_1.n_cols>1)
+            {
+                index_matriz_1 = (i+1)*matrix_1.stride_rows + matrix_1.offset;
+                index_matriz_2 = (i+1)*matrix_2.stride_rows + matrix_2.offset;
+            }
+        }
+    }
+    matrix = create_matrix(vector, matrix_1.n_rows, matrix_1.n_cols);
     free(vector);
     return matrix;
 
 }
 Matrix sub(Matrix matrix_1, Matrix matrix_2){
-
     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
         printf("** Erro: As matrizes possuem dimensões diferentes **\n\n");
         exit(1);
     }
     Matrix matrix;
+    int nelementos = matrix_1.n_rows * matrix_2.n_rows;
     int *vector;
-    int nelementos = matrix_1.n_rows * matrix_2.n_cols;
-
+    int index_matriz_1=matrix_1.offset;
+    int index_matriz_2=matrix_2.offset;
+    int cont = 0;
     vector = (int *) malloc(nelementos*sizeof(int));
 
     if(!vector){
         printf("** Erro: Memoria Insuficiente **");
         exit(1);
     }
-    for(int i=0; i<nelementos; i++)
-        vector[i] = matrix_1.data[i+matrix_1.offset]-matrix_2.data[i+matrix_2.offset];
+    for(int i=0;i<matrix_1.n_rows;i++)
+    {
+        for(int j=0; j<matrix_1.n_cols; j++)
+        {
+            vector[cont]=matrix_1.data[index_matriz_1]-matrix_2.data[index_matriz_2];
+            cont++;
+            index_matriz_1 += matrix_1.stride_cols;
+            index_matriz_2 += matrix_2.stride_cols;
 
-    matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
+        }
+
+        if(matrix_1.stride_rows==1)
+        { 
+            index_matriz_1 = matrix_1.offset + matrix_1.stride_rows;
+            index_matriz_2 = matrix_2.offset + matrix_2.stride_rows;
+        }
+        else
+        {
+            if(matrix_1.n_cols>1)
+            {
+                index_matriz_1 = (i+1)*matrix_1.stride_rows + matrix_1.offset;
+                index_matriz_2 = (i+1)*matrix_2.stride_rows + matrix_2.offset;
+            }
+        }
+    }
+    matrix = create_matrix(vector, matrix_1.n_rows, matrix_1.n_cols);
     free(vector);
     return matrix;
-
 
 }
 Matrix division(Matrix matrix_1, Matrix matrix_2){
@@ -294,45 +338,90 @@ Matrix division(Matrix matrix_1, Matrix matrix_2){
         exit(1);
     }
     Matrix matrix;
+    int nelementos = matrix_1.n_rows * matrix_2.n_rows;
     int *vector;
-    int nelementos = matrix_1.n_rows * matrix_2.n_cols;
-
+    int index_matriz_1=matrix_1.offset;
+    int index_matriz_2=matrix_2.offset;
+    int cont = 0;
     vector = (int *) malloc(nelementos*sizeof(int));
 
     if(!vector){
         printf("** Erro: Memoria Insuficiente **");
         exit(1);
     }
-    for(int i=0; i<nelementos; i++)
-        vector[i] = matrix_1.data[i+matrix_1.offset]/matrix_2.data[i+matrix_2.offset];
+    for(int i=0;i<matrix_1.n_rows;i++)
+    {
+        for(int j=0; j<matrix_1.n_cols; j++)
+        {
+            vector[cont]=matrix_1.data[index_matriz_1]/matrix_2.data[index_matriz_2];
+            cont++;
+            index_matriz_1 += matrix_1.stride_cols;
+            index_matriz_2 += matrix_2.stride_cols;
 
-    matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
+        }
+
+        if(matrix_1.stride_rows==1)
+        { 
+            index_matriz_1 = matrix_1.offset + matrix_1.stride_rows;
+            index_matriz_2 = matrix_2.offset + matrix_2.stride_rows;
+        }
+        else
+        {
+            if(matrix_1.n_cols>1)
+            {
+                index_matriz_1 = (i+1)*matrix_1.stride_rows + matrix_1.offset;
+                index_matriz_2 = (i+1)*matrix_2.stride_rows + matrix_2.offset;
+            }
+        }
+    }
+    matrix = create_matrix(vector, matrix_1.n_rows, matrix_1.n_cols);
     free(vector);
     return matrix;
 
 }
 Matrix mul(Matrix matrix_1, Matrix matrix_2){
-
-     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
+    if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
         printf("** Erro: As matrizes possuem dimensões diferentes **\n\n");
         exit(1);
     }
     Matrix matrix;
+    int nelementos = matrix_1.n_rows * matrix_2.n_rows;
     int *vector;
-    int nelementos = matrix_1.n_rows * matrix_2.n_cols;
-
+    int index_matriz_1=matrix_1.offset;
+    int index_matriz_2=matrix_2.offset;
+    int cont = 0;
     vector = (int *) malloc(nelementos*sizeof(int));
 
     if(!vector){
         printf("** Erro: Memoria Insuficiente **");
         exit(1);
     }
-    for(int i=0; i<nelementos; i++)
-        vector[i] = matrix_1.data[i+matrix_1.offset]*matrix_2.data[i+matrix_2.offset];
+    for(int i=0;i<matrix_1.n_rows;i++)
+    {
+        for(int j=0; j<matrix_1.n_cols; j++)
+        {
+            vector[cont]=matrix_1.data[index_matriz_1]*matrix_2.data[index_matriz_2];
+            cont++;
+            index_matriz_1 += matrix_1.stride_cols;
+            index_matriz_2 += matrix_2.stride_cols;
 
-    matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
+        }
+
+        if(matrix_1.stride_rows==1)
+        { 
+            index_matriz_1 = matrix_1.offset + matrix_1.stride_rows;
+            index_matriz_2 = matrix_2.offset + matrix_2.stride_rows;
+        }
+        else
+        {
+            if(matrix_1.n_cols>1)
+            {
+                index_matriz_1 = (i+1)*matrix_1.stride_rows + matrix_1.offset;
+                index_matriz_2 = (i+1)*matrix_2.stride_rows + matrix_2.offset;
+            }
+        }
+    }
+    matrix = create_matrix(vector, matrix_1.n_rows, matrix_1.n_cols);
     free(vector);
     return matrix;
-
 }
-
