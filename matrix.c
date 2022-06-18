@@ -241,8 +241,8 @@ int argmax(Matrix matrix){
 
 Matrix add(Matrix matrix_1, Matrix matrix_2){
 
-     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols || matrix_1.offset != matrix_2.offset ){
-        printf("** Erro: As matrizes possuem dimensões diferentes ou offsets diferentes**\n\n");
+    if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
+        printf("** Erro: As matrizes possuem dimensões diferentes **\n\n");
         exit(1);
     }
     Matrix matrix;
@@ -255,8 +255,8 @@ Matrix add(Matrix matrix_1, Matrix matrix_2){
         printf("** Erro: Memoria Insuficiente **");
         exit(1);
     }
-    for(int i=matrix_1.offset; i<nelementos; i++)
-        vector[i] = matrix_1.data[i]+matrix_2.data[i];
+    for(int i=0; i<nelementos; i++)
+        vector[i] = matrix_1.data[i+matrix_1.offset]+matrix_2.data[i+matrix_2.offset];
 
     matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
     free(vector);
@@ -265,8 +265,8 @@ Matrix add(Matrix matrix_1, Matrix matrix_2){
 }
 Matrix sub(Matrix matrix_1, Matrix matrix_2){
 
-     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols || matrix_1.offset != matrix_2.offset ){
-        printf("** Erro: As matrizes possuem dimensões diferentes ou offsets diferentes**\n\n");
+    if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
+        printf("** Erro: As matrizes possuem dimensões diferentes **\n\n");
         exit(1);
     }
     Matrix matrix;
@@ -279,17 +279,18 @@ Matrix sub(Matrix matrix_1, Matrix matrix_2){
         printf("** Erro: Memoria Insuficiente **");
         exit(1);
     }
-    for(int i=matrix_1.offset; i<nelementos; i++)
-        vector[i] = matrix_1.data[i]-matrix_2.data[i];
+    for(int i=0; i<nelementos; i++)
+        vector[i] = matrix_1.data[i+matrix_1.offset]-matrix_2.data[i+matrix_2.offset];
 
     matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
     free(vector);
     return matrix;
 
+
 }
 Matrix division(Matrix matrix_1, Matrix matrix_2){
-     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols || matrix_1.offset != matrix_2.offset ){
-        printf("** Erro: As matrizes possuem dimensões diferentes ou offsets diferentes**\n\n");
+    if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
+        printf("** Erro: As matrizes possuem dimensões diferentes **\n\n");
         exit(1);
     }
     Matrix matrix;
@@ -302,8 +303,8 @@ Matrix division(Matrix matrix_1, Matrix matrix_2){
         printf("** Erro: Memoria Insuficiente **");
         exit(1);
     }
-    for(int i=matrix_1.offset; i<nelementos; i++)
-        vector[i] = matrix_1.data[i]/matrix_2.data[i];
+    for(int i=0; i<nelementos; i++)
+        vector[i] = matrix_1.data[i+matrix_1.offset]/matrix_2.data[i+matrix_2.offset];
 
     matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
     free(vector);
@@ -312,8 +313,8 @@ Matrix division(Matrix matrix_1, Matrix matrix_2){
 }
 Matrix mul(Matrix matrix_1, Matrix matrix_2){
 
-     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols || matrix_1.offset != matrix_2.offset ){
-        printf("** Erro: As matrizes possuem dimensões diferentes ou offsets diferentes**\n\n");
+     if (matrix_1.n_rows != matrix_2.n_rows || matrix_1.n_cols != matrix_2.n_cols ){
+        printf("** Erro: As matrizes possuem dimensões diferentes **\n\n");
         exit(1);
     }
     Matrix matrix;
@@ -326,8 +327,8 @@ Matrix mul(Matrix matrix_1, Matrix matrix_2){
         printf("** Erro: Memoria Insuficiente **");
         exit(1);
     }
-    for(int i=matrix_1.offset; i<nelementos; i++)
-        vector[i] = matrix_1.data[i]*matrix_2.data[i];
+    for(int i=0; i<nelementos; i++)
+        vector[i] = matrix_1.data[i+matrix_1.offset]*matrix_2.data[i+matrix_2.offset];
 
     matrix = create_matrix(vector, matrix_1.n_rows, matrix_2.n_cols);
     free(vector);
