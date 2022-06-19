@@ -62,24 +62,32 @@ Matrix i_matrix(int n){
     return matrix;
 }
 Matrix tile_matrix(Matrix matrix, int reps){
+/* Repete a matriz de entrada reps vezes na horizontal */
     Matrix m;
     int *vector;
-    int nelementos = matrix.n_rows * matrix.n_cols * reps * reps;
+    int nelementos = matrix.n_rows * matrix.n_cols;
+    int index=0;
 
-    vector = (int *) malloc(nelementos*sizeof(int));
+    vector = (int *) malloc(nelementos*reps*sizeof(int));
 
     if(!vector){
         printf("** Erro: Memoria Insuficiente **");
         exit(1);
     }
 
-    for(int i=0; i<nelementos; i+=matrix.n_rows*matrix.n_cols){
-        for(int j=0; j<(matrix.n_rows*matrix.n_cols);j++){
-            vector[i+j] = matrix.data[j];
+    for(int k=0; k<nelementos*reps; k+=matrix.n_cols*reps){
+
+        for(int i=0; i<matrix.n_cols*reps; i+=matrix.n_cols){ 
+
+            for(int j=0; j<matrix.n_cols;j++){
+                vector[i+j+k] = matrix.data[index++];
+            }
+            index -= matrix.n_cols;   
         }
+        index += matrix.n_cols;
     }
 
-    m = create_matrix(vector, matrix.n_rows*reps, matrix.n_cols*reps);
+    m = create_matrix(vector, matrix.n_rows, matrix.n_cols*reps);
 
     free(vector);
     return m;
@@ -130,24 +138,27 @@ void print_matrix(Matrix matrix){
 
             index += matrix.stride_cols;
 
-            if(j != matrix.n_cols-1)
+            if(j != matrix.n_cols-1)/* caractere separador*/
                 printf(" ");
         }
 
         //reajustar o índice
-        if(matrix.stride_rows==1){  /* caso matriz transposta */
-            index = matrix.offset + matrix.stride_rows;
-        }else{
-            if(matrix.n_cols>1){
-                index = (i+1)*matrix.stride_rows + matrix.offset;
-            }
-        }
-
+        index = (i+1) * matrix.stride_rows + matrix.offset;
+        // if(matrix.stride_rows==1){  /* caso matriz transposta */
+        //     index = matrix.offset + (i+1)*matrix.stride_rows;
+        // }else{
+        //     if(matrix.n_cols>1){
+        //         index = (i+1)*matrix.stride_rows + matrix.offset;
+        //     }
+        // }
+        
+        /*
         if(i < matrix.n_rows-1)
             printf("]\n");
         else
             printf("]");
-        //testar: printf("%s", i<matrix.n_rows-1? "]\n" : "]");
+        */
+        printf("%s", i<matrix.n_rows-1? "]\n" : "]");
     }
     printf("]\n");
 }
@@ -189,7 +200,6 @@ Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce){
     sliced.n_rows = re-rs;
     sliced.n_cols = ce-cs;
     sliced.stride_rows = a_matrix.n_cols;
-    //sliced.stride_cols = 1;
     sliced.offset = a_matrix.stride_rows * rs + cs;
     
     if(sliced.n_cols == 1)
@@ -199,7 +209,6 @@ Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce){
 
     return sliced;
 }
-
 
 int min(Matrix matrix){
    int min_n=matrix.data[matrix.offset];
