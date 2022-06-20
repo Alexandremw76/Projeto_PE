@@ -66,7 +66,7 @@ Matrix tile_matrix(Matrix matrix, int reps){
     Matrix m;
     int *vector;
     int nelementos = matrix.n_rows * matrix.n_cols;
-    int index=0;
+    int index=matrix.offset;
 
     vector = (int *) malloc(nelementos*reps*sizeof(int));
 
@@ -76,15 +76,19 @@ Matrix tile_matrix(Matrix matrix, int reps){
     }
 
     for(int k=0; k<nelementos*reps; k+=matrix.n_cols*reps){
-
+        
         for(int i=0; i<matrix.n_cols*reps; i+=matrix.n_cols){ 
 
             for(int j=0; j<matrix.n_cols;j++){
-                vector[i+j+k] = matrix.data[index++];
+                vector[i+j+k] = matrix.data[index];
+                index += matrix.stride_cols;
             }
-            index -= matrix.n_cols;   
+            //index -= matrix.n_cols; 
+            index -= matrix.n_cols * matrix.stride_cols;
+            //index = (i) * matrix.n_cols + matrix.offset;
         }
-        index += matrix.n_cols;
+        //index = (index+1) * matrix.n_cols + matrix.offset;
+        index += matrix.stride_rows;
     }
 
     m = create_matrix(vector, matrix.n_rows, matrix.n_cols*reps);
@@ -134,24 +138,18 @@ void print_matrix(Matrix matrix){
         printf("[");
 
         for(int j=0; j<matrix.n_cols; j++){
+            // index = matrix.stride_rows*i+matrix.stride_cols*j;
+            // index += matrix.offset;
             printf("%2d", matrix.data[index]);
 
             index += matrix.stride_cols;
-
+            
             if(j != matrix.n_cols-1)/* caractere separador*/
                 printf(" ");
         }
 
         //reajustar o índice
         index = (i+1) * matrix.stride_rows + matrix.offset;
-        // if(matrix.stride_rows==1){  /* caso matriz transposta */
-        //     index = matrix.offset + (i+1)*matrix.stride_rows;
-        // }else{
-        //     if(matrix.n_cols>1){
-        //         index = (i+1)*matrix.stride_rows + matrix.offset;
-        //     }
-        // }
-        
         /*
         if(i < matrix.n_rows-1)
             printf("]\n");
@@ -176,6 +174,7 @@ Matrix transpose(Matrix matrix) {
     return transposed;
 }
 Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols){
+    Matrix reshaped;
     int quantidade_de_elementos = matrix.n_rows * matrix.n_cols;
 
     if(quantidade_de_elementos != new_n_rows * new_n_cols){
@@ -183,11 +182,14 @@ Matrix reshape(Matrix matrix, int new_n_rows, int new_n_cols){
         exit(1);
     }
 
-    matrix.n_rows = new_n_rows;
-    matrix.n_cols = new_n_cols;
-    matrix.stride_rows = new_n_cols;
+    reshaped.data = matrix.data;
+    reshaped.n_rows = new_n_rows;
+    reshaped.n_cols = new_n_cols;
+    reshaped.stride_rows = new_n_cols;
+    reshaped.stride_cols = matrix.stride_cols;
+    reshaped.offset = matrix.offset;
 
-    return matrix;
+    return reshaped;
 }
 Matrix slice(Matrix a_matrix, int rs, int re, int cs, int ce){
     Matrix sliced;
